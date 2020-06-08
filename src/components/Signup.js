@@ -1,17 +1,35 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
-import {Button, TextInput, HelperText, Switch, Title} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Entypo';
-import {theme} from '../../theme';
+import {StyleSheet} from 'react-native';
+import {Button, TextInput, HelperText} from 'react-native-paper';
+import { useAuth } from '../hooks/useAuth';
+import { useValidator } from '../hooks/useValidator';
 
 export const Signup = () => {
+  const {auth} = useAuth();
+  const {error, validateSignup} = useValidator();
+
   const [user, setUser] = useState({
     email: '',
     password: '',
+    confirmPassword: '',
   });
+
+  const signupHandler = () => {
+    validateSignup(user.email, user.password, user.confirmPassword);
+    // auth(user.email, user.password, true); // 3-rd parametr newUser
+  };
   
   return (
     <>
+      {error.email &&
+        <HelperText
+          style={styles.error}
+          type="error"
+          visible={!!error.email}
+        >
+          {error.email}
+        </HelperText>
+      }
       <TextInput
         mode="outlined"
         dense={true}
@@ -23,6 +41,15 @@ export const Signup = () => {
         placeholder='example@mail.com'
         onChangeText={text => setUser({...user, email: text})}
       />
+      {error.password &&
+        <HelperText
+          style={styles.error}
+          type="error"
+          visible={!!error.password}
+        >
+          {error.password}
+        </HelperText>
+      }
       <TextInput
         mode="outlined"
         dense={true}
@@ -35,6 +62,15 @@ export const Signup = () => {
         placeholder='min. 6 characters'
         onChangeText={text => setUser({...user, password: text})}
       />
+      {error.confirmPassword &&
+        <HelperText
+          style={styles.error}
+          type="error"
+          visible={!!error.confirmPassword}
+        >
+          {error.confirmPassword}
+        </HelperText>
+      }
       <TextInput
         mode="outlined"
         dense={true}
@@ -45,10 +81,11 @@ export const Signup = () => {
         style={styles.input}
         label='Confirm password'
         placeholder='confirm password'
-        onChangeText={text => setUser({...user, password: text})}
+        onChangeText={text => setUser({...user, confirmPassword: text})}
       />
       <Button
-        mode="contained"
+        mode='contained'
+        onPress={() => signupHandler()}
       >Sign Up</Button>
     </>
   )
@@ -58,5 +95,8 @@ const styles = StyleSheet.create({
   input: {
     width: '80%',
     marginBottom: 20,
+  },
+  error: {
+    fontSize: 15
   }
 });

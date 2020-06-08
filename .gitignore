@@ -32,7 +32,8 @@ java_pid1750.hprof
 
 # node.js
 #
-
+src/firebase.js
+firebase.js
 node_modules/
 npm-debug.log
 yarn-error.log

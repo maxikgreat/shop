@@ -1,34 +1,34 @@
 import React, {useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, KeyboardAvoidingView} from 'react-native';
 import {Switch, Title} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Entypo';
 import {theme} from '../../theme';
 import {Login} from '../components/Login';
 import {Signup} from '../components/Signup';
 
-export const Auth = () => {
-  const [form, setForm] = useState(false);
+export const Auth = ({route}) => {
+  const [form, setForm] = useState(route.params.switch);
 
   return (
-    <View style={styles.container}>
-      <Icon name='login' color={theme.colors.primary} size={60} style={{marginBottom: 20}}/>
-      <View style={styles.switcher}>
-        <Title
-          style={form ? styles.textDisable : null}
-        >Log In</Title>
-        <Switch
-          value={form}
-          onValueChange={() => setForm(!form)}
-        />
-        <Title
-          style={!form ? styles.textDisable : null}
-        >Sign Up</Title>
-      </View>
-      {
-        form ? <Signup /> : <Login />
-      }
-    </View>
-  )
+      <KeyboardAvoidingView behavior='height' style={styles.container}>
+        <Icon name='login' color={theme.colors.primary} size={60} style={{marginBottom: 20}}/>
+        <View style={styles.switcher}>
+          <Title
+            style={form ? styles.textDisable : null}
+          >Log In</Title>
+          <Switch
+            value={form}
+            onValueChange={() => setForm(!form)}
+          />
+          <Title
+            style={!form ? styles.textDisable : null}
+          >Sign Up</Title>
+        </View>
+        {
+          form ? <Signup /> : <Login />
+        }
+      </KeyboardAvoidingView>
+  ) 
 };
 
 const styles = StyleSheet.create({

@@ -1,14 +1,19 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Text} from 'react-native';
-import {Button, TextInput, HelperText, Switch, Title} from 'react-native-paper';
-import Icon from 'react-native-vector-icons/Entypo';
-import {theme} from '../../theme';
+import {StyleSheet} from 'react-native';
+import {Button, TextInput, HelperText} from 'react-native-paper';
+import { useAuth } from '../hooks/useAuth';
 
 export const Login = () => {
+
+  const {auth} = useAuth();
   const [user, setUser] = useState({
     email: '',
     password: '',
   });
+
+  const loginHandler = () => {
+    auth(user.email, user.password);
+  };
   
   return (
     <>
@@ -37,6 +42,7 @@ export const Login = () => {
       />
       <Button
         mode="contained"
+        onPress={loginHandler}
       >Log In</Button>
     </>
   )
@@ -46,5 +52,5 @@ const styles = StyleSheet.create({
   input: {
     width: '80%',
     marginBottom: 20,
-  }
+  },
 });

@@ -1,6 +1,6 @@
-import React, { useContext } from 'react';
-import {View, StyleSheet, Image, TouchableOpacity} from 'react-native';
-import {Avatar, Appbar, Title, Paragraph, Button, IconButton, Badge, Divider} from 'react-native-paper';
+import React from 'react';
+import {View, StyleSheet} from 'react-native';
+import {Appbar, Title, Button, IconButton, Badge, Divider} from 'react-native-paper';
 import {createDrawerNavigator, DrawerItemList} from '@react-navigation/drawer';
 import {theme} from '../../theme';
 import {Home} from './Home';
@@ -20,13 +20,13 @@ const CustomDrawerContent = (props) => {
                   style={styles.userButton}
                   mode="contained"
                   color={theme.colors.accent}
-                  onPress={() => props.navigation.navigate('Auth')}
+                  onPress={() => props.navigation.navigate('Auth', {switch: false})}
                 >Log In</Button>
                 <Button
                   style={styles.userButton}
                   mode="contained"
                   color={theme.colors.accent}
-                  onPress={() => props.navigation.navigate('Auth')}
+                  onPress={() => props.navigation.navigate('Auth', {switch: true})}
                 >Sign In</Button>
               </View>
               <View style={styles.userCartContainer}>
@@ -160,12 +160,12 @@ const styles = StyleSheet.create({
   },
   cartBadge: {
     position: 'absolute',
-    backgroundColor: theme.colors.accent
+    backgroundColor: theme.colors.accent,
   },
   divider: {
     backgroundColor: theme.colors.primary,
     height: 3,
-    width: '100%'
-  }
+    width: '100%',
+  },
 });
 
