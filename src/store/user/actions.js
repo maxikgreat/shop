@@ -1,8 +1,8 @@
 import {USER_LOGIN, USER_LOGOUT, USER_SIGNUP} from '../types';
 
-export const signup = () => {
+export const signup = (email, password) => {
   return dispatch => {
-    console.log('signup user with');
+    console.log('signup user with', email, password);
     dispatch({
       type: USER_SIGNUP,
     });
