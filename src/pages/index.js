@@ -20,11 +20,13 @@ const CustomDrawerContent = (props) => {
                   style={styles.userButton}
                   mode="contained"
                   color={theme.colors.accent}
+                  onPress={() => props.navigation.navigate('Auth')}
                 >Log In</Button>
                 <Button
                   style={styles.userButton}
                   mode="contained"
                   color={theme.colors.accent}
+                  onPress={() => props.navigation.navigate('Auth')}
                 >Sign In</Button>
               </View>
               <View style={styles.userCartContainer}>

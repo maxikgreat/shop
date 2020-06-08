@@ -3,30 +3,30 @@ import {View, StyleSheet} from 'react-native';
 import {Button, Title, Paragraph} from 'react-native-paper';
 import {theme} from '../../theme';
 
-export const CustomModal = ({route, navigation}) => {
-  const {title, body, acceptAction} = route.params;
+export const CustomModal = () => {
+  //const {title, body, acceptAction} = route.params;
 
-  const onAcceptAction = () => {
-    acceptAction();
-    navigation.goBack();
-  };
+  // const onAcceptAction = () => {
+  //   acceptAction();
+  //   navigation.goBack();
+  // };
 
   return (
     <View style={styles.container}>
-      <Title style={styles.title}>{title}</Title>
-      <Paragraph style={styles.body}>{body}</Paragraph>
+      {/* <Title style={styles.title}>{title}</Title> */}
+      {/* <Paragraph style={styles.body}>{body}</Paragraph> */}
       <View style={styles.buttonsContainer}>
       <Button
         style={styles.button}
         mode="contained"
         color={theme.colors.error}
-				onPress={() => navigation.goBack()}
+				//onPress={() => navigation.goBack()}
 			>Cancel
       </Button>
       <Button
         style={styles.button}
         mode="contained"
-				onPress={() => onAcceptAction()}
+				//onPress={() => onAcceptAction()}
 			>OK
       </Button>
       </View>
