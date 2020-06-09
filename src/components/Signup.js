@@ -5,9 +5,9 @@ import { useAuth } from '../hooks/useAuth';
 import { useValidator } from '../hooks/useValidator';
 
 export const Signup = () => {
-  const {auth} = useAuth();
+  const {auth, loading} = useAuth();
   const {error, validateSignup} = useValidator(
-    () => auth(user.email, user.password, user.confirmPassword)
+    () => auth(user.email, user.password, true) // true - new user flag
   ); // callback with confirmation function
 
   const [user, setUser] = useState({
@@ -87,6 +87,8 @@ export const Signup = () => {
       <Button
         mode='contained'
         onPress={() => signupHandler()}
+        disabled={loading}
+        loading={loading}
       >Sign Up</Button>
     </>
   )

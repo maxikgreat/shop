@@ -5,7 +5,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useValidator } from '../hooks/useValidator';
 
 export const Login = () => {
-  const {auth} = useAuth();
+  const {auth, loading} = useAuth();
   const {error, validateLogin} = useValidator(
     () => auth(user.email, user.password)
   ); // callback with confirmation function
@@ -65,6 +65,8 @@ export const Login = () => {
       <Button
         mode="contained"
         onPress={loginHandler}
+        disabled={loading}
+        loading={loading}
       >Log In</Button>
     </>
   )

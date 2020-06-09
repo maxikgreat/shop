@@ -1,33 +1,42 @@
 import React from 'react';
 import {View, StyleSheet} from 'react-native';
-import {Appbar, Title, Button, IconButton, Badge, Divider} from 'react-native-paper';
+import {Appbar, Title, Button, IconButton, Badge, Divider, Paragraph} from 'react-native-paper';
 import {createDrawerNavigator, DrawerItemList} from '@react-navigation/drawer';
 import {theme} from '../../theme';
 import {Home} from './Home';
 import {Purchases} from './Purchases';
 import {Profile} from './Profile';
+import {useSelector} from 'react-redux';
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = (props) => {
-
   return (
     <View style={styles.container}>
         <View style={styles.top}>
             <View style={styles.userContainer}>
               <View>
-                <Button
-                  style={styles.userButton}
-                  mode="contained"
-                  color={theme.colors.accent}
-                  onPress={() => props.navigation.navigate('Auth', {switch: false})}
-                >Log In</Button>
-                <Button
-                  style={styles.userButton}
-                  mode="contained"
-                  color={theme.colors.accent}
-                  onPress={() => props.navigation.navigate('Auth', {switch: true})}
-                >Sign In</Button>
+                {
+                  props.logged
+                  ? <>
+                      <Title>Welcome,</Title>
+                      <Paragraph>{props.email}</Paragraph>
+                    </>
+                  : <>
+                      <Button
+                        style={styles.userButton}
+                        mode="contained"
+                        color={theme.colors.accent}
+                        onPress={() => props.navigation.navigate('Auth', {switch: false})}
+                      >Log In</Button>
+                      <Button
+                        style={styles.userButton}
+                        mode="contained"
+                        color={theme.colors.accent}
+                        onPress={() => props.navigation.navigate('Auth', {switch: true})}
+                      >Sign In</Button>
+                    </>
+                }
               </View>
               <View style={styles.userCartContainer}>
                 <IconButton
@@ -49,9 +58,15 @@ const CustomDrawerContent = (props) => {
       <View style={styles.main}>
         <View style={styles.balance}>
           <View style={styles.balanceTextContainer}>
-            <Title style={styles.balanceText}>Bonus account</Title>
-            <Divider style={styles.divider}/>
-            <Title style={styles.balanceText}>125$</Title>
+            {
+              props.logged
+              ? <>
+                  <Title style={styles.balanceText}>Bonus account</Title>
+                  <Divider style={styles.divider}/>
+                  <Title style={styles.balanceText}>125$</Title>
+                </>
+              : <Title>To use bonus account you need to log in</Title>
+            }
           </View>
         </View>
         <View>
@@ -59,7 +74,7 @@ const CustomDrawerContent = (props) => {
             mode="contained"
             color={theme.colors.accent}
             style={styles.promo}
-            //onPress={() => onReplenish()}
+            disabled={!props.logged}
           >I have a promocode</Button>
         </View>
       </View>
@@ -67,7 +82,7 @@ const CustomDrawerContent = (props) => {
         <Appbar style={styles.optionsContainer}>
         <Appbar.Action color={theme.colors.text} size={40} icon="web" onPress={() => console.log('Pressed logout')} />
           <Appbar.Action color={theme.colors.text} size={40} icon="comment-question-outline" onPress={() => console.log('Pressed mail')} />
-          <Appbar.Action color={theme.colors.text} size={40} icon="exit-run" onPress={() => console.log('Pressed logout')} />
+          <Appbar.Action disabled={!props.logged} color={theme.colors.text} size={40} icon="exit-run" onPress={() => console.log('Pressed logout')} />
         </Appbar>
       </View>
     </View>
@@ -75,9 +90,11 @@ const CustomDrawerContent = (props) => {
 }
 
 export const ShopNavigation = () => {
+  const user = useSelector(state => state.user);
+
     return (
         <Drawer.Navigator
-          drawerContent={props => <CustomDrawerContent {...props} />}
+          drawerContent={props => <CustomDrawerContent {...props} logged={user.logged} email={user.email} />}
           initialRouteName="Home"
           drawerType="back"
           // eslint-disable-next-line react-native/no-inline-styles
@@ -96,9 +113,15 @@ export const ShopNavigation = () => {
             inactiveTintColor: theme.colors.text,
           }}
         >
-          <Drawer.Screen name='Products' component={Home} />
-          <Drawer.Screen name='Purchase history' component={Purchases} />
-          <Drawer.Screen name='Profile' component={Profile} />
+          {
+            user.logged
+            ? <>
+                <Drawer.Screen name='Products' component={Home} />
+                <Drawer.Screen name='Purchase history' component={Purchases} />
+                <Drawer.Screen name='Profile' component={Profile} />
+              </>
+            : <Drawer.Screen name='Products' component={Home} />
+          }
         </Drawer.Navigator>
     );
 }
