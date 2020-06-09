@@ -4,8 +4,8 @@ import {Button, TextInput, HelperText} from 'react-native-paper';
 import { useAuth } from '../hooks/useAuth';
 import { useValidator } from '../hooks/useValidator';
 
-export const Signup = () => {
-  const {auth, loading} = useAuth();
+export const Signup = ({nav}) => {
+  const {auth, loading} = useAuth(nav);
   const {error, validateSignup} = useValidator(
     () => auth(user.email, user.password, true) // true - new user flag
   ); // callback with confirmation function
