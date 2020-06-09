@@ -2,21 +2,34 @@ import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {Button, TextInput, HelperText} from 'react-native-paper';
 import { useAuth } from '../hooks/useAuth';
+import { useValidator } from '../hooks/useValidator';
 
 export const Login = () => {
-
   const {auth} = useAuth();
+  const {error, validateLogin} = useValidator(
+    () => auth(user.email, user.password)
+  ); // callback with confirmation function
+
   const [user, setUser] = useState({
     email: '',
     password: '',
   });
 
   const loginHandler = () => {
-    auth(user.email, user.password);
+    validateLogin(user.email, user.password);
   };
-  
+
   return (
     <>
+      {error.email &&
+        <HelperText
+          style={styles.error}
+          type="error"
+          visible={!!error.email}
+        >
+          {error.email}
+        </HelperText>
+      }
       <TextInput
         mode="outlined"
         dense={true}
@@ -28,6 +41,15 @@ export const Login = () => {
         placeholder='example@mail.com'
         onChangeText={text => setUser({...user, email: text})}
       />
+      {error.password &&
+        <HelperText
+          style={styles.error}
+          type="error"
+          visible={!!error.password}
+        >
+          {error.password}
+        </HelperText>
+      }
       <TextInput
         mode="outlined"
         dense={true}

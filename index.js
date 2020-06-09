@@ -19,7 +19,7 @@ export default function index() {
   const {visible, message, show, hide} = snackbarState();
   return (
     <StoreProvider store={store}>
-      <SnackbarContext.Provider value={visible, message, show, hide}>
+      <SnackbarContext.Provider value={{visible, message, show, hide}}>
         <PaperProvider theme={theme}>
           <NavigationContainer>
             <App />

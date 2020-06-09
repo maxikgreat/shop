@@ -11,7 +11,7 @@ export const CustomSnackbar = () => {
     <Snackbar
       visible={snackbar.visible}
       onDismiss={() => snackbar.hide()}
-      duration={2000}
+      duration={3000}
       theme={{
         ...theme,
         colors: {

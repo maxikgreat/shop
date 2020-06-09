@@ -6,7 +6,9 @@ import { useValidator } from '../hooks/useValidator';
 
 export const Signup = () => {
   const {auth} = useAuth();
-  const {error, validateSignup} = useValidator(() => auth(user.email, user.password, user.confirmPassword)); // if no error - auth
+  const {error, validateSignup} = useValidator(
+    () => auth(user.email, user.password, user.confirmPassword)
+  ); // callback with confirmation function
 
   const [user, setUser] = useState({
     email: '',

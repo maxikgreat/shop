@@ -1,21 +1,41 @@
 import {USER_LOGIN, USER_LOGOUT, USER_SIGNUP} from '../types';
+import AsyncStorage from '@react-native-community/async-storage';
+import firebase from '../../firebase';
 
 export const signup = (email, password) => {
-  return dispatch => {
-    console.log('signup user with', email, password);
-    dispatch({
-      type: USER_SIGNUP,
-    });
+  return async dispatch => {
+    try {
+      const user = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      await AsyncStorage.setItem('refreshToken', user.user.refreshToken);
+      dispatch({
+        type: USER_SIGNUP,
+        payload: {
+          email: user.user.email,
+          uid: user.user.uid,
+        },
+      });
+    } catch (e) {
+      return e.message;
+    }
   };
 };
 
-export const login = () => {
-  console.log('login user with');
-  return dispach => {
-    dispach({
-      type: USER_LOGIN,
-    });
-  };
+export const login = (email, password) => {
+  return async dispatch => {
+    try {
+      const user = await firebase.auth().signInWithEmailAndPassword(email, password);
+      await AsyncStorage.setItem('refreshToken', user.user.refreshToken);
+      dispatch({
+        type: USER_LOGIN,
+        payload: {
+          email: user.user.email,
+          uid: user.user.uid,
+        },
+      });
+    } catch (e) {
+      return e.message;
+    }
+  }
 };
 
 export const logout = () => {

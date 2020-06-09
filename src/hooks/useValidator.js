@@ -11,7 +11,23 @@ export const useValidator = (confirmAction) => {
   };
 
   const validateLogin = (email, password) => {
+    setError({});
+    const localError = {};
+    if (!email) {
+      localError.email = 'Field is required';
+    }
+    if (email && !validator.isEmail(email)) {
+      localError.email = 'Incorrect email address';
+    }
+    if (!password) {
+      localError.password = 'Field is required';
+    }
+    if (password && !validator.isLength(password, {min: 6})) {
+      localError.password = 'Min. 6 characters required';
+    }
+    setError(localError);
 
+    checkErrors(localError);
   };
 
   const validateSignup = (email, password, confirmPassword) => {

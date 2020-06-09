@@ -2,6 +2,7 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {CustomModal} from './components/CustomModal';
+import {CustomSnackbar} from './components/CustomSnackbar';
 import { ShopNavigation } from './pages';
 import {theme} from '../theme';
 import { Auth } from './pages/Auth';
@@ -20,23 +21,26 @@ const headerStyle = {
 
 const App = () => {
   return (
-    <RootNavigator.Navigator mode='card'>
-      <RootNavigator.Screen
-        name='Shop'
-        component={ShopNavigation}
-        options={headerStyle}
-      />
-      <RootNavigator.Screen
-        name='Modal'
-        component={CustomModal}
-        options={{headerShown: false}}
-      />
-      <RootNavigator.Screen
-        name='Auth'
-        component={Auth}
-        options={headerStyle}
-      />
-    </RootNavigator.Navigator>
+    <>
+      <RootNavigator.Navigator mode='card'>
+        <RootNavigator.Screen
+          name='Shop'
+          component={ShopNavigation}
+          options={headerStyle}
+        />
+        <RootNavigator.Screen
+          name='Modal'
+          component={CustomModal}
+          options={{headerShown: false}}
+        />
+        <RootNavigator.Screen
+          name='Auth'
+          component={Auth}
+          options={headerStyle}
+        />
+      </RootNavigator.Navigator>
+      <CustomSnackbar />
+    </>
   );
 };
 
