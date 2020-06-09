@@ -27,7 +27,7 @@ const headerStyle = {
 export const App = () => {
   const user = useSelector(state => state.user);
   const {autoAuth, loading} = useAuth();
-  const {fetchList, loadingShop} = useShop();
+  const {fetchList} = useShop();
 
   useEffect(() => {
     fetchList();
@@ -38,7 +38,7 @@ export const App = () => {
   return (
     <>
       {
-        loading && loadingShop
+        loading
         ? <View style={styles.container}>
             <ActivityIndicator size='large' color={theme.colors.primary} />
           </View>
