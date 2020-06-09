@@ -5,8 +5,10 @@ import Icon from 'react-native-vector-icons/Entypo';
 import {theme} from '../../theme';
 import {Login} from '../components/Login';
 import {Signup} from '../components/Signup';
+import {useNavigation} from '@react-navigation/native';
 
 export const Auth = ({route}) => {
+  const navigation = useNavigation();
   const [form, setForm] = useState(route.params.switch);
 
   return (
@@ -25,7 +27,9 @@ export const Auth = ({route}) => {
           >Sign Up</Title>
         </View>
         {
-          form ? <Signup /> : <Login />
+          form
+          ? <Signup nav={navigation}/>
+          : <Login nav={navigation}/>
         }
       </KeyboardAvoidingView>
   ) 

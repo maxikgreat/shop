@@ -72,10 +72,15 @@ export const autoLogin = () => {
 }
 
 export const logout = () => {
-  console.log('logout user with');
-  return dispatch => {
-    dispatch({
-      type: USER_LOGOUT,
-    });
+  return async dispatch => {
+    try {
+      await firebase.auth().signOut();
+      await AsyncStorage.removeItem('user');
+      dispatch({
+        type: USER_LOGOUT,
+      });
+    } catch (e) {
+      return e.message;
+    }
   };
 };

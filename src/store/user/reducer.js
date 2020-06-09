@@ -11,7 +11,9 @@ export const userReducer = (state = initialState, {type, payload}) => {
     case USER_LOGOUT:
       return {
         ...state,
-        ///logged: false,
+        logged: false,
+        uid: '',
+        email: '',
       };
     case USER_SIGNUP:
       return {

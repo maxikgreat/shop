@@ -9,6 +9,7 @@ import { ShopNavigation } from './pages';
 import {theme} from '../theme';
 import { Auth } from './pages/Auth';
 import {useAuth} from './hooks/useAuth';
+import {useShop} from './hooks/useShop';
 import {useSelector} from 'react-redux';
 
 const RootNavigator = createStackNavigator();
@@ -23,10 +24,13 @@ const headerStyle = {
   },
 };
 
-const App = () => {
+export const App = () => {
   const user = useSelector(state => state.user);
   const {autoAuth, loading} = useAuth();
+  const {fetchList, loadingShop} = useShop();
+
   useEffect(() => {
+    fetchList();
     if (!user.logged) {
       autoAuth();
     }
@@ -34,7 +38,7 @@ const App = () => {
   return (
     <>
       {
-        loading
+        loading && loadingShop
         ? <View style={styles.container}>
             <ActivityIndicator size='large' color={theme.colors.primary} />
           </View>
@@ -70,4 +74,3 @@ const styles = StyleSheet.create({
   }
 });
 
-export default App;

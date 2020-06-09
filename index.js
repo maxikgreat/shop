@@ -1,7 +1,7 @@
 import 'react-native-gesture-handler';
 import React from 'react';
 import {AppRegistry, YellowBox} from 'react-native';
-import App from './src/App';
+import {App} from './src/App';
 import {name as appName} from './app.json';
 import {Provider as StoreProvider} from 'react-redux';
 import {Provider as PaperProvider} from 'react-native-paper';

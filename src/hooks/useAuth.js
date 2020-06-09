@@ -3,7 +3,7 @@ import {SnackbarContext} from '../context/SnackbarContext';
 import {useDispatch} from 'react-redux';
 import {login, logout, signup, autoLogin} from '../store/user/actions';
 
-export const useAuth = () => {
+export const useAuth = (nav) => {
   const dispatch = useDispatch();
   const snackbar = useContext(SnackbarContext);
   const [loading, setLoading] = useState(false);
@@ -19,19 +19,25 @@ export const useAuth = () => {
 
     if (authError) {
       snackbar.show(authError);
+    } else {
+      nav.navigate('Shop');
     }
     setLoading(false);
   };
 
   const autoAuth = async () => {
     setLoading(true);
-    let authError = '';
-    authError = await dispatch(autoLogin());
-    if (authError) {
-      snackbar.show(authError);
-    }
+    await dispatch(autoLogin());
     setLoading(false);
   };
 
-  return {auth, autoAuth, loading};
+  const reverseAuth = async () => {
+    let logoutError = '';
+    logoutError = await dispatch(logout());
+    if (logoutError) {
+      snackbar.show(logoutError);
+    }
+  };
+
+  return {auth, autoAuth, reverseAuth, loading};
 };

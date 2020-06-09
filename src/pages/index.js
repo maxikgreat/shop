@@ -6,6 +6,7 @@ import {theme} from '../../theme';
 import {Home} from './Home';
 import {Purchases} from './Purchases';
 import {Profile} from './Profile';
+import {useAuth} from '../hooks/useAuth';
 import {useSelector} from 'react-redux';
 
 const Drawer = createDrawerNavigator();
@@ -80,9 +81,25 @@ const CustomDrawerContent = (props) => {
       </View>
       <View style={styles.bottom}>
         <Appbar style={styles.optionsContainer}>
-        <Appbar.Action color={theme.colors.text} size={40} icon="web" onPress={() => console.log('Pressed logout')} />
-          <Appbar.Action color={theme.colors.text} size={40} icon="comment-question-outline" onPress={() => console.log('Pressed mail')} />
-          <Appbar.Action disabled={!props.logged} color={theme.colors.text} size={40} icon="exit-run" onPress={() => console.log('Pressed logout')} />
+          <Appbar.Action 
+            color={theme.colors.text} 
+            size={40} 
+            icon="web" 
+            onPress={() => console.log('Pressed web')} 
+          />
+          <Appbar.Action 
+            color={theme.colors.text} 
+            size={40} 
+            icon="comment-question-outline" 
+            onPress={() => console.log('Pressed question')} 
+          />
+          <Appbar.Action 
+            disabled={!props.logged} 
+            color={theme.colors.text} 
+            size={40} 
+            icon="exit-run" 
+            onPress={() => props.logout()} 
+          />
         </Appbar>
       </View>
     </View>
@@ -91,10 +108,17 @@ const CustomDrawerContent = (props) => {
 
 export const ShopNavigation = () => {
   const user = useSelector(state => state.user);
-
+  const {reverseAuth} = useAuth();
     return (
         <Drawer.Navigator
-          drawerContent={props => <CustomDrawerContent {...props} logged={user.logged} email={user.email} />}
+          drawerContent={props => (
+            <CustomDrawerContent 
+              {...props} 
+              logged={user.logged} 
+              email={user.email}
+              logout={reverseAuth}
+            />
+          )}
           initialRouteName="Home"
           drawerType="back"
           // eslint-disable-next-line react-native/no-inline-styles
