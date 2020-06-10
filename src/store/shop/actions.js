@@ -14,27 +14,36 @@ export const fetchProducts = () => {
           fetchImages(products);
           dispatch({
             type: FETCH_PRODUCTS,
-            payload: products
+            payload: products,
+          });
+          dispatch({
+            type: HIDE_LOADER,
           });
         });
     } catch (e) {
       console.log(e);
+      dispatch({
+        type: HIDE_LOADER,
+      });
     }
-    dispatch({
-      type: HIDE_LOADER,
-    });
   };
 }
 
 const fetchImages = async (products) => {
-  const getImage = async item => {
-    return await firebase.storage().ref('/')
-      .child('Microwaves')
+  const getImage = async (category, item) => {
+    try {
+      return await firebase.storage().ref('/')
+      .child(category)
       .child(`${item.vendor}_${item.model}.jpeg`).getDownloadURL();
+    } catch (e) {
+      return undefined;
+    }
+    
   };
-
-  for (let item of products['Microwaves']) {
-    item.img = await getImage(item);
+  for (let category in products) {
+    for (let item of products[category]) {
+      item.img = await getImage(category, item);
+    }
   }
 };
 

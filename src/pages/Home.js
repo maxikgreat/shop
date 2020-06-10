@@ -16,7 +16,7 @@ export const Home = () => {
       {
         shop.loading
         ? <View style={styles.container}> 
-            <ActivityIndicator />
+            <ActivityIndicator size='large' color={theme.colors.primary} />
           </View>
         :
           <ProductsNavigation.Navigator initialRouteName='Categories' headerMode='none'>
