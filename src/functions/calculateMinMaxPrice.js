@@ -12,6 +12,5 @@ export const calculateMinMaxPrice = (items) => {
       max = item.discountPrice;
     }
   })
-  console.log(min, max);
   return {min, max};
 };

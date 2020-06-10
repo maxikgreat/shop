@@ -26,8 +26,8 @@ export const Filters = ({filters, setFilters, constsMinMax}) => {
       discount: false,
       guarantee: false,
       price: {
-        min: filters.price.min,
-        max: filters.price.max,
+        min: constsMinMax.min,
+        max: constsMinMax.max,
       },
     })
     setFilters({
@@ -35,8 +35,8 @@ export const Filters = ({filters, setFilters, constsMinMax}) => {
       discount: false,
       guarantee: false,
       price: {
-        min: filters.price.min,
-        max: filters.price.max,
+        min: constsMinMax.min,
+        max: constsMinMax.max,
       },
     })
   };

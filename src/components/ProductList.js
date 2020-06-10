@@ -4,7 +4,7 @@ import {theme} from '../../theme';
 import { ProductCard } from './ProductCard';
 import {Sorter} from './Sorter';
 import {Filters} from './Filters';
-import {Title, Divider} from 'react-native-paper';
+import {Title, Divider, Paragraph} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {SORTS} from '../consts';
 import {sortItems} from '../functions/sortItems';
@@ -59,6 +59,11 @@ export const ProductList = ({route}) => {
           {
             filters.discount
             ? <Icon name='percent' color={theme.colors.text} size={20} style={styles.filterIcon}/>
+            : null
+          }
+          {
+            filters.price.min && filters.price.max
+            ? <Paragraph>{filters.price.min}$ - {filters.price.max}$</Paragraph>
             : null
           }
         </TouchableOpacity>
