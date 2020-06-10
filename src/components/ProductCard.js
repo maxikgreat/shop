@@ -41,13 +41,7 @@ export const ProductCard = ({prod}) => {
         </Card.Content>
         <Divider style={styles.divider}/>
         <Card.Actions style={styles.cardBottom}>
-          {
-            prod.discount > 0
-            ? <Title style={styles.price}>
-                {(prod.price - (prod.price * (prod.discount / 100))).toString()}$
-              </Title>
-            : <Title style={styles.price}>{prod.price}$</Title>
-          }
+          <Title style={styles.price}>{prod.discountPrice}$</Title>
           <View style={styles.row}>
             <Button
               style={styles.button}
@@ -90,6 +84,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontWeight: 'bold',
+    fontSize: 25
   },
   divider: {
     marginTop: 10,

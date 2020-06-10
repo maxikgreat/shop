@@ -1,14 +1,14 @@
 import React from 'react';
-import {RadioButton, Title} from 'react-native-paper';
+import {RadioButton, Title, IconButton} from 'react-native-paper';
 import {StyleSheet, ScrollView, View} from 'react-native';
 import {SORTS} from '../consts';
 import {theme} from '../../theme';
 
-export const Sorter = () => {
+export const Sorter = ({sort, setSort}) => {
 
   const renderSorts = () => {
-    return SORTS.map(sort => (
-      <View style={styles.item}>
+    return SORTS.map((sort, index) => (
+      <View key={index} style={styles.item}>
         <RadioButton value={sort} />
         <Title style={{marginRight: 15}}>{sort}</Title>
       </View>
@@ -17,10 +17,17 @@ export const Sorter = () => {
 
   return (
     <View style={styles.container}>
+      <IconButton 
+        icon='sort' 
+        size={25} 
+        onPress={() => setSort({...sort, reverse: !sort.reverse})}
+        color={sort.reverse ? theme.colors.accent : theme.colors.text}
+        style={styles.buttonReverse}
+      />
       <Title style={styles.title}>Sort by</Title>
       <RadioButton.Group
-        //onValueChange={value => this.setState({ value })}
-        value={SORTS[0]}
+        onValueChange={value => setSort({...sort, type: value})}
+        value={sort.type}
       >
         <ScrollView horizontal contentContainerStyle={styles.container}>
           {renderSorts()}
@@ -45,5 +52,9 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: theme.colors.accent,
     borderRadius: 20,
+  },
+  buttonReverse: {
+    marginLeft: 0,
+    paddingLeft: 0
   }
 })

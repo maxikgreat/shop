@@ -1,15 +1,25 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 import {theme} from '../../theme';
 import { ProductCard } from './ProductCard';
 import {Sorter} from './Sorter';
 import {Title, Divider} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import {SORTS} from '../consts';
+import {sortItems} from '../functions/sortItems';
+import {countDiscount} from '../functions/countDiscount';
 
 export const ProductList = ({route}) => {
+  const [sort, setSort] = useState({
+    type: SORTS[0],
+    reverse: false
+  });
 
   const renderProducts = () => {
-    return route.params.productList.map(prod => (
+    const products = route.params.productList;
+    countDiscount(products);
+    sortItems(sort, products);
+    return products.map(prod => (
       <ProductCard
         key={prod.model}
         prod={prod}
@@ -20,7 +30,10 @@ export const ProductList = ({route}) => {
   return (
     <View style={styles.container}>
       <View style={styles.optContainer}>
-        <Sorter />
+        <Sorter
+          sort={sort}
+          setSort={setSort}
+        />
         <Divider style={styles.divider} />
         <TouchableOpacity style={styles.filterContainer}>
           <Icon name='filter' color={theme.colors.text} size={20} style={styles.filterIcon}/>
@@ -52,7 +65,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   filterIcon: {
-    marginRight: 10
+    marginRight: 10,
+    marginLeft: 5
   },
   divider: {
     height: 3,
