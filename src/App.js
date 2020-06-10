@@ -3,7 +3,6 @@ import React, {useEffect} from 'react';
 import {ActivityIndicator} from 'react-native-paper';
 import {StyleSheet, View} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {CustomModal} from './components/CustomModal';
 import {CustomSnackbar} from './components/CustomSnackbar';
 import { ShopNavigation } from './pages';
 import {theme} from '../theme';
@@ -47,11 +46,6 @@ export const App = () => {
               name='Shop'
               component={ShopNavigation}
               options={headerStyle}
-            />
-            <RootNavigator.Screen
-              name='Modal'
-              component={CustomModal}
-              options={{headerShown: false}}
             />
             <RootNavigator.Screen
               name='Auth'

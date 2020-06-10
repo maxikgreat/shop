@@ -1,7 +1,7 @@
 
 import React from 'react';
 import {StyleSheet, Text, Image, View} from 'react-native';
-import {Card, Title, Paragraph, Button, Divider} from 'react-native-paper';
+import {Card, Title, Paragraph, Button, Divider, Badge} from 'react-native-paper';
 import {theme} from '../../theme';
 import altImage from '../assets/images/no-image.png';
 import discountImage from '../assets/images/discount.png';
@@ -33,7 +33,12 @@ export const ProductCard = ({prod}) => {
           : null
         }
         <Card.Content>
-          <Title><Text style={styles.specText}>{prod.vendor}</Text> | {prod.model}</Title>
+          <Title style={styles.vendorText}><Text style={styles.specText}>{prod.vendor}</Text> | {prod.model}</Title>        
+          {
+            prod.garancy > 0
+            ? <Paragraph style={styles.guarantee}>Guarantee {prod.garancy} monthes</Paragraph>
+            : <Paragraph style={styles.guarantee}>No Guarantee</Paragraph>
+          }
           <View style={{...styles.row, ...styles.rate}}>
             {renderRating()}
           </View>
@@ -41,7 +46,14 @@ export const ProductCard = ({prod}) => {
         </Card.Content>
         <Divider style={styles.divider}/>
         <Card.Actions style={styles.cardBottom}>
-          <Title style={styles.price}>{prod.discountPrice}$</Title>
+          <View>
+            <Title style={styles.price}>{prod.discountPrice.toFixed(2)}$</Title>
+            {
+              prod.discount
+              ? <Badge style={styles.discount}>-{prod.discount}%</Badge>
+              : null
+            }
+          </View>
           <View style={styles.row}>
             <Button
               style={styles.button}
@@ -78,8 +90,8 @@ const styles = StyleSheet.create({
   },
   image: {
     position: 'absolute',
-    width: 80,
-    height: 80,
+    width: 90,
+    height: 90,
     resizeMode: 'stretch'
   },
   price: {
@@ -99,7 +111,23 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
   },
+  between: {
+    marginTop: 5,
+    justifyContent: 'space-between'
+  },
   rate: {
     marginBottom: 5
+  },
+  discount: {
+    position: 'absolute',
+    fontSize: 15,
+    top: '-40%',
+    right: '-10%'
+  },
+  vendorText: {
+    marginTop: 10
+  },
+  guarantee: {
+    marginBottom: 5,
   }
 })

@@ -1,6 +1,5 @@
 
 export const sortItems = (sort, items) => {
-  console.log(sort);
   switch (sort.type) {
     case 'vendor':
       items.sort((leftHand, rightHand) => {

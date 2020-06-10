@@ -3,23 +3,33 @@ import {View, StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 import {theme} from '../../theme';
 import { ProductCard } from './ProductCard';
 import {Sorter} from './Sorter';
+import {Filters} from './Filters';
 import {Title, Divider} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {SORTS} from '../consts';
 import {sortItems} from '../functions/sortItems';
 import {countDiscount} from '../functions/countDiscount';
+import {filterItems} from '../functions/filterItems';
+import {calculateMinMaxPrice} from '../functions/calculateMinMaxPrice';
 
 export const ProductList = ({route}) => {
   const [sort, setSort] = useState({
     type: SORTS[0],
-    reverse: false
+    reverse: false,
+  });
+  const [filters, setFilters] = useState({
+    visible: false,
+    discount: false,
+    guarantee: false,
+    price: calculateMinMaxPrice(route.params.productList),
   });
 
   const renderProducts = () => {
-    const products = route.params.productList;
-    countDiscount(products);
-    sortItems(sort, products);
-    return products.map(prod => (
+    const noFiltered = route.params.productList;
+    countDiscount(noFiltered);
+    const filtered = filterItems(filters, noFiltered);
+    sortItems(sort, filtered);
+    return filtered.map(prod => (
       <ProductCard
         key={prod.model}
         prod={prod}
@@ -35,14 +45,32 @@ export const ProductList = ({route}) => {
           setSort={setSort}
         />
         <Divider style={styles.divider} />
-        <TouchableOpacity style={styles.filterContainer}>
+        <TouchableOpacity 
+          style={styles.filterContainer}
+          onPress={() => setFilters({...filters, visible: true})}
+        >
           <Icon name='filter' color={theme.colors.text} size={20} style={styles.filterIcon}/>
-          <Title>Filter...</Title>
+          <Title style={{marginRight: 20}}>Filter...</Title>
+          {
+            filters.guarantee
+            ? <Icon name='shield' color={theme.colors.text} size={20} style={styles.filterIcon}/>
+            : null
+          }
+          {
+            filters.discount
+            ? <Icon name='percent' color={theme.colors.text} size={20} style={styles.filterIcon}/>
+            : null
+          }
         </TouchableOpacity>
       </View>
       <ScrollView contentContainerStyle={styles.scroll}>
         {renderProducts()}
       </ScrollView>
+      <Filters
+        filters={filters}
+        setFilters={setFilters}
+        constsMinMax={calculateMinMaxPrice(route.params.productList)}
+      />
     </View>
   );
 }
