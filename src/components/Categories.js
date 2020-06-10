@@ -12,9 +12,9 @@ export const Categories = ({navigation}) => {
   } = useShop();
 
   const renderCategories = () => {
-    return getCategories().map(cat => {
+    return getCategories().map((cat, index) => {
       return (
-        <>
+        <View key={index}>
           <Divider style={styles.divider}/>
             <List.Item
               title={cat.name}
@@ -24,7 +24,7 @@ export const Categories = ({navigation}) => {
               })}
               left={() => <Badge style={styles.badgeStyle}>{cat.items}</Badge>}
           />
-       </>
+       </View>
       )
     })
   };
@@ -44,7 +44,7 @@ export const Categories = ({navigation}) => {
             })}
             left={() => <Badge style={styles.badgeStyle}>{getAllItems().length}</Badge>}
           />
-          <Divider style={styles.divider}/>
+          <Divider style={styles.divider} />
       </List.Section>
      </View>
   )

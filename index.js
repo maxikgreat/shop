@@ -13,6 +13,7 @@ import {snackbarState} from './src/context/snackbarState';
 
 YellowBox.ignoreWarnings([
   'Non-serializable values were found in the navigation state',
+  'Setting a timer',
 ]);
 
 export default function index() {
