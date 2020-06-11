@@ -5,6 +5,7 @@ import {useSelector} from 'react-redux';
 import {Categories} from '../components/Categories';
 import {createStackNavigator} from '@react-navigation/stack';
 import { ProductList } from '../components/ProductList';
+import {Product} from '../components/Product';
 
 const ProductsNavigation = createStackNavigator();
 
@@ -27,6 +28,10 @@ export const Home = () => {
             <ProductsNavigation.Screen 
               name='ProductList' 
               component={ProductList} 
+            />
+            <ProductsNavigation.Screen
+              name='Product'
+              component={Product} 
             />
           </ProductsNavigation.Navigator>
       }

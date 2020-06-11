@@ -8,15 +8,15 @@ import discountImage from '../assets/images/discount.png';
 import {MAX_RATE} from '../consts';
 import Icon from 'react-native-vector-icons/Entypo';
 
-export const ProductCard = ({prod}) => {
+export const ProductCard = ({prod, navigation}) => {
 
   const renderRating = () => {
     const rating = [];
     for (let i = 0; i < MAX_RATE; i++) {
       if (prod.rating > i) {
-        rating.push(<Icon key={i} name='star' color='#fcdf4c' size={15}/>);
+        rating.push(<Icon key={i} name='star' color='#fcdf4c' size={15} />);
       } else {
-        rating.push(<Icon key={i} name='star' color={theme.colors.primary} size={15}/>);
+        rating.push(<Icon key={i} name='star' color={theme.colors.primary} size={15} />);
       }
     }
     return rating;
@@ -59,7 +59,7 @@ export const ProductCard = ({prod}) => {
               style={styles.button}
               mode="contained"
               color={theme.colors.primary}
-              //onPress={() => navigation.goBack()}
+              onPress={() => navigation.navigate('Product', {prod})}
             >More
             </Button>
             <Button

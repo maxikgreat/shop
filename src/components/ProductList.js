@@ -12,7 +12,7 @@ import {countDiscount} from '../functions/countDiscount';
 import {filterItems} from '../functions/filterItems';
 import {calculateMinMaxPrice} from '../functions/calculateMinMaxPrice';
 
-export const ProductList = ({route}) => {
+export const ProductList = ({route, navigation}) => {
   const [sort, setSort] = useState({
     type: SORTS[0],
     reverse: false,
@@ -33,6 +33,7 @@ export const ProductList = ({route}) => {
       <ProductCard
         key={prod.model}
         prod={prod}
+        navigation={navigation}
       />
     ))
   }
