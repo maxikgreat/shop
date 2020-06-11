@@ -7,6 +7,10 @@ export const signup = (email, password) => {
   return async dispatch => {
     try {
       const user = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      await AsyncStorage.setItem('user', JSON.stringify({
+        email: user.user.email,
+        password: Base64.encode(password),
+      }));
       if (user) {
         dispatch({
           type: USER_SIGNUP,

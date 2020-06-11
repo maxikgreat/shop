@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Appbar, Title, Button, IconButton, Badge, Divider, Paragraph} from 'react-native-paper';
 import {createDrawerNavigator, DrawerItemList} from '@react-navigation/drawer';
@@ -9,6 +9,7 @@ import {Profile} from './Profile';
 import {useAuth} from '../hooks/useAuth';
 import {useShop} from '../hooks/useShop';
 import {useSelector} from 'react-redux';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const Drawer = createDrawerNavigator();
 
@@ -94,7 +95,12 @@ const CustomDrawerContent = (props) => {
             color={theme.colors.text} 
             size={40} 
             icon="comment-question-outline" 
-            onPress={() => console.log('Pressed question')} 
+            onPress={async () => {
+              const user = await AsyncStorage.getItem('user');
+              const cart = await AsyncStorage.getItem('cart');
+              console.log('User', user);
+              console.log('Cart', cart);
+            }} 
           />
           <Appbar.Action 
             disabled={!props.logged} 
