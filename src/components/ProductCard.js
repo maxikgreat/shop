@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, Text, Image, View} from 'react-native';
 import {Card, Title, Paragraph, Button, Divider, Badge} from 'react-native-paper';
 import {theme} from '../../theme';
@@ -7,8 +7,18 @@ import altImage from '../assets/images/no-image.png';
 import discountImage from '../assets/images/discount.png';
 import {MAX_RATE} from '../consts';
 import Icon from 'react-native-vector-icons/Entypo';
+import {useShop} from '../hooks/useShop';
+import {SnackbarContext} from '../context/SnackbarContext';
 
 export const ProductCard = ({prod, navigation}) => {
+
+  const {addToShoppingCart} = useShop();
+  const snackbar = useContext(SnackbarContext);
+
+  const addToCartHandler = () => {
+    addToShoppingCart(prod);
+    snackbar.show('Item was added to your cart');
+  };
 
   const renderRating = () => {
     const rating = [];
@@ -66,7 +76,7 @@ export const ProductCard = ({prod, navigation}) => {
               style={styles.button}
               mode="contained"
               color={theme.colors.error}
-              //onPress={() => navigation.goBack()}
+              onPress={() => addToCartHandler()}
             >Add to cart
             </Button>
           </View>

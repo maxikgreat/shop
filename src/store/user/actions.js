@@ -76,6 +76,7 @@ export const logout = () => {
     try {
       await firebase.auth().signOut();
       await AsyncStorage.removeItem('user');
+      await AsyncStorage.removeItem('cart');
       dispatch({
         type: USER_LOGOUT,
       });

@@ -6,4 +6,8 @@ export const FETCH_PRODUCTS = 'FETCH_PRODUCTS';
 export const SHOW_LOADER = 'SHOW_LOADER';
 export const HIDE_LOADER = 'HIDE_LOADER';
 
+export const FETCH_CART = 'FETCH_CART';
+export const ADD_TO_CART = 'ADD_TO_CART';
+export const DELETE_FROM_CART = 'DELETE_FROM_CART';
+export const DELETE_ALL = 'DELETE_ALL';
 

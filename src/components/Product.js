@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {Title, Paragraph, Button, DataTable, Badge} from 'react-native-paper';
 import {View, StyleSheet, Image, ScrollView} from 'react-native';
 import {theme} from '../../theme';
@@ -6,16 +6,25 @@ import altImage from '../assets/images/no-image.png';
 import discountImage from '../assets/images/discount.png';
 import Icon from 'react-native-vector-icons/Entypo';
 import {MAX_RATE} from '../consts';
+import { useShop } from '../hooks/useShop';
+import { SnackbarContext } from '../context/SnackbarContext';
 
 export const Product = ({route}) => {
   const prod = route.params.prod;
+  const {addToShoppingCart} = useShop();
+  const snackbar = useContext(SnackbarContext);
 
   const [desc, setDesc] = useState(true);
 
+  const addToCartHandler = () => {
+    addToShoppingCart(prod);
+    snackbar.show('Item was added to your cart');
+  };
+
   const renderCharacteristics = () => {
-    return Object.keys(prod.stats).map(stat => {
+    return Object.keys(prod.stats).map((stat, index) => {
       return (
-        <DataTable.Row>
+        <DataTable.Row key={index}>
           <DataTable.Cell>{stat}</DataTable.Cell>
           <DataTable.Cell>{prod.stats[stat]}</DataTable.Cell>
         </DataTable.Row>
@@ -97,6 +106,7 @@ export const Product = ({route}) => {
           style={styles.buyButton}
           contentStyle={{height: 50}}
           labelStyle={{fontSize: 20, fontWeight: 'bold'}}
+          onPress={() => addToCartHandler()}
         >Add to cart</Button>
     </View>
   )
@@ -167,7 +177,7 @@ const styles = StyleSheet.create({
   discount: {
     position: 'absolute',
     fontSize: 15,
-    top: '-40%',
+    top: '-30%',
     right: '20%'
   },
   withPriceContainer: {

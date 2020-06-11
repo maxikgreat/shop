@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {View, StyleSheet} from 'react-native';
 import {Appbar, Title, Button, IconButton, Badge, Divider, Paragraph} from 'react-native-paper';
 import {createDrawerNavigator, DrawerItemList} from '@react-navigation/drawer';
@@ -7,11 +7,13 @@ import {Home} from './Home';
 import {Purchases} from './Purchases';
 import {Profile} from './Profile';
 import {useAuth} from '../hooks/useAuth';
+import {useShop} from '../hooks/useShop';
 import {useSelector} from 'react-redux';
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = (props) => {
+
   return (
     <View style={styles.container}>
         <View style={styles.top}>
@@ -41,15 +43,16 @@ const CustomDrawerContent = (props) => {
               </View>
               <View style={styles.userCartContainer}>
                 <IconButton
+                  disabled={props.cart.quantity === 0}
                   icon="cart"
                   color={theme.colors.background}
                   size={50}
-                  onPress={() => console.log('Pressed')}
+                  onPress={() => props.navigation.navigate('ShoppingCart')}
                 />
                 <Badge
-                  size={35} 
+                  size={35}
                   style={styles.cartBadge}
-                >10</Badge>
+                >{props.cart.quantity}</Badge>
               </View>
             </View>
         </View>
@@ -109,6 +112,7 @@ const CustomDrawerContent = (props) => {
 export const ShopNavigation = () => {
   const user = useSelector(state => state.user);
   const {reverseAuth} = useAuth();
+  const {cart} = useShop();
     return (
         <Drawer.Navigator
           drawerContent={props => (
@@ -117,6 +121,7 @@ export const ShopNavigation = () => {
               logged={user.logged} 
               email={user.email}
               logout={reverseAuth}
+              cart={cart}
             />
           )}
           initialRouteName="Home"

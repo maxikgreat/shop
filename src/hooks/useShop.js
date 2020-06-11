@@ -1,10 +1,13 @@
 
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchProducts} from '../store/shop/actions';
+import {fetchCart, addToCart, deleteFromCart, deleteAll} from '../store/cart/actions';
+
 
 export const useShop = () => {
   const dispatch = useDispatch();
   const shop = useSelector(state => state.shop);
+  const cart = useSelector(state => state.cart);
 
   const fetchList = async () => {
     await dispatch(fetchProducts());
@@ -32,9 +35,34 @@ export const useShop = () => {
         items.push(item);
       });
     }
-
     return items;
   }
 
-  return {fetchList, getCategories, getAllItems, getItemsByCategory};
+  const fetchShoppingCart = () => {
+    dispatch(fetchCart());
+  }
+
+  const addToShoppingCart = (prod) => {
+    dispatch(addToCart(prod));
+  }
+
+  const deleteFromShoppingCart = (prod) => {
+    dispatch(deleteFromCart(prod))
+  }
+
+  const deleteAllCart = () => {
+    dispatch(deleteAll());
+  }
+
+  return {
+    fetchList, 
+    getCategories, 
+    getAllItems, 
+    getItemsByCategory,
+    fetchShoppingCart,
+    addToShoppingCart,
+    deleteFromShoppingCart,
+    deleteAllCart,
+    cart
+  };
 };
