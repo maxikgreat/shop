@@ -77,6 +77,7 @@ export const autoLogin = () => {
           Base64.decode(password),
         );
         if (user) {
+          await fetchHistory(dispatch, user.user.uid);
           dispatch({
             type: USER_LOGIN,
             payload: {

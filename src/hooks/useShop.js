@@ -55,8 +55,13 @@ export const useShop = () => {
     }
   }
 
-  const rateItem = (item) => {
-    dispatch(rateProduct(item));
+  const rateItem = async (item, value) => {
+    const error = await dispatch(rateProduct(item, value));
+    if (error) {
+      snackbar.show(error);
+    } else {
+      snackbar.show("You've rated this item");
+    }
   }
 
   const fetchShoppingCart = () => {

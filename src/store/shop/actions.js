@@ -38,7 +38,6 @@ const fetchImages = async (products) => {
     } catch (e) {
       return undefined;
     }
-    
   };
   for (let category in products) {
     for (let item of products[category]) {
@@ -74,7 +73,6 @@ export const buyProducts = (products) => {
           .child('history').push({
             time: Date.now(),
             item: prod.item,
-            quantity: prod.quantity,
             rate: 0,
           });
       };
@@ -101,8 +99,14 @@ export const buyProducts = (products) => {
   }
 };
 
-export const rateProduct = (prod) => {
+export const rateProduct = (prod, rate) => {
   return async dispatch => {
-    console.log(prod);
+    try {
+      const user = await firebase.auth().currentUser;
+      await firebase.database().ref('/').child(user.uid)
+        .child('history').child(prod.id).child('rate').set(rate);
+    } catch (e) {
+      return e.message;
+    }
   }
 }
