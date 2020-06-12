@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import {View, ScrollView, StyleSheet, Image} from 'react-native';
 import {Title, Button, Paragraph} from 'react-native-paper';
 import {theme} from '../../theme';
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
-    resizeMode: 'contain'
+    resizeMode: 'cover'
   }
 
 })

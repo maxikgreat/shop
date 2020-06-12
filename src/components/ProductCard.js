@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   price: {
     fontWeight: 'bold',
-    fontSize: 25
+    fontSize: 20
   },
   divider: {
     marginTop: 10,
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.primary
   },
   cardBottom: {
-    justifyContent: 'space-around',
+    justifyContent: 'space-between',
     alignItems: 'center'
   },
   row: {

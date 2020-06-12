@@ -3,10 +3,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useContext} from 'react';
 import {fetchProducts, buyProducts, rateProduct} from '../store/shop/actions';
 import {fetchCart, addToCart, deleteFromCart, deleteAll} from '../store/cart/actions';
+import {checkBonus, updateBonus} from '../store/user/actions';
 import { SnackbarContext } from '../context/SnackbarContext';
 
 
-export const useShop = () => {
+export const useShop = (navigation) => {
   const dispatch = useDispatch();
   const shop = useSelector(state => state.shop);
   const cart = useSelector(state => state.cart);
@@ -41,17 +42,33 @@ export const useShop = () => {
     return items;
   }
 
-  const buyItems = async (cart) => {
+  const checkPromo = async (promo) => {
+    const response = await dispatch(checkBonus(promo));
+    snackbar.show(response);
+  };
+
+  const changeBonusBalance = (value) => {
+    dispatch(updateBonus(value));
+  };
+
+  const buyItems = async (cart, bonus = false) => {
     if (cart.items.length > 0) {
+      if (bonus && bonus < cart.summary) {
+          snackbar.show('Not enough money on bonus account')
+          return;
+      } else {
+        changeBonusBalance(cart.summary);
+      }
       const error = await dispatch(buyProducts(cart.items));
       if (error) {
         snackbar.show(error);
       } else {
         snackbar.show('Stuff was succesfully bought');
         deleteAllCart();
+        navigation.navigate('Categories');
       }
     } else {
-      snackbar.show('No items in cart')
+      snackbar.show('No items in cart');
     }
   }
 
@@ -91,6 +108,7 @@ export const useShop = () => {
     deleteAllCart,
     buyItems,
     rateItem,
+    checkPromo,
     cart,
     shop
   };

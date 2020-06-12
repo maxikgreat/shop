@@ -1,5 +1,5 @@
-import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {View, StyleSheet, KeyboardAvoidingView} from 'react-native';
 import {Appbar, Title, Button, IconButton, Badge, Divider, Paragraph} from 'react-native-paper';
 import {createDrawerNavigator, DrawerItemList} from '@react-navigation/drawer';
 import {theme} from '../../theme';
@@ -8,14 +8,15 @@ import {Purchases} from './Purchases';
 import {useAuth} from '../hooks/useAuth';
 import {useShop} from '../hooks/useShop';
 import {useSelector} from 'react-redux';
-import AsyncStorage from '@react-native-community/async-storage';
+import {Promo} from '../components/Promo';
 
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = (props) => {
+  const [visiblePromo, setVisiblePromo] = useState(false);
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView behavior='height' style={styles.container}>
         <View style={styles.top}>
             <View style={styles.userContainer}>
               <View>
@@ -67,7 +68,7 @@ const CustomDrawerContent = (props) => {
               ? <>
                   <Title style={styles.balanceText}>Bonus account</Title>
                   <Divider style={styles.divider}/>
-                  <Title style={styles.balanceText}>125$</Title>
+                  <Title style={styles.balanceText}>{props.bonus}$</Title>
                 </>
               : <Title>To use bonus account you need to log in</Title>
             }
@@ -79,6 +80,7 @@ const CustomDrawerContent = (props) => {
             color={theme.colors.accent}
             style={styles.promo}
             disabled={!props.logged}
+            onPress={() => setVisiblePromo(true)}
           >I have a promocode</Button>
         </View>
       </View>
@@ -94,12 +96,7 @@ const CustomDrawerContent = (props) => {
             color={theme.colors.text} 
             size={40} 
             icon="comment-question-outline" 
-            onPress={async () => {
-              const user = await AsyncStorage.getItem('user');
-              const cart = await AsyncStorage.getItem('cart');
-              console.log('User', user);
-              console.log('Cart', cart);
-            }} 
+            onPress={() => console.log('Questions')} 
           />
           <Appbar.Action 
             disabled={!props.logged} 
@@ -109,8 +106,12 @@ const CustomDrawerContent = (props) => {
             onPress={() => props.logout()} 
           />
         </Appbar>
+        <Promo 
+          visible={visiblePromo}
+          setVisible={setVisiblePromo}
+        />
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -118,6 +119,7 @@ export const ShopNavigation = () => {
   const user = useSelector(state => state.user);
   const {reverseAuth} = useAuth();
   const {cart} = useShop();
+
     return (
         <Drawer.Navigator
           drawerContent={props => (
@@ -127,11 +129,11 @@ export const ShopNavigation = () => {
               email={user.email}
               logout={reverseAuth}
               cart={cart}
+              bonus={user.bonus}
             />
           )}
           initialRouteName="Home"
           drawerType="back"
-          // eslint-disable-next-line react-native/no-inline-styles
           drawerStyle={{
             width: '70%',
             backgroundColor: theme.colors.primary,

@@ -1,6 +1,6 @@
 import {useContext, useState} from 'react';
 import {SnackbarContext} from '../context/SnackbarContext';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {login, logout, signup, autoLogin} from '../store/user/actions';
 import {fetchCart} from '../store/cart/actions';
 
@@ -8,6 +8,7 @@ export const useAuth = (nav) => {
   const dispatch = useDispatch();
   const snackbar = useContext(SnackbarContext);
   const [loading, setLoading] = useState(false);
+  const user = useSelector(state => state.user);
 
   const auth = async (email, password, newUser = false) => {
     setLoading(true);
@@ -44,5 +45,5 @@ export const useAuth = (nav) => {
     }
   };
 
-  return {auth, autoAuth, reverseAuth, loading};
+  return {auth, autoAuth, reverseAuth, loading, user};
 };

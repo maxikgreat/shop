@@ -1,10 +1,11 @@
-import {USER_LOGOUT, USER_SIGNUP, USER_LOGIN, USER_FETCH_HISTORY} from '../types';
+import {USER_LOGOUT, USER_SIGNUP, USER_LOGIN, USER_FETCH_HISTORY, USER_FETCH_BONUS, USER_PROMO_SUCCESS} from '../types';
 
 const initialState = {
   logged: false,
   uid: '',
   email: '',
-  history: {}
+  history: {},
+  bonus: 0
 };
 
 export const userReducer = (state = initialState, {type, payload}) => {
@@ -35,6 +36,16 @@ export const userReducer = (state = initialState, {type, payload}) => {
       return {
         ...state,
         history: payload
+      }
+    case USER_FETCH_BONUS:
+      return {
+        ...state,
+        bonus: payload
+      }
+    case USER_PROMO_SUCCESS: 
+      return {
+        ...state,
+        bonus: payload
       }
     default: return state;
   }

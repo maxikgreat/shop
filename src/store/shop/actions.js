@@ -21,13 +21,13 @@ export const fetchProducts = () => {
           });
         });
     } catch (e) {
-      console.log(e);
+      console.log(e.message);
       dispatch({
         type: HIDE_LOADER,
       });
     }
   };
-}
+};
 
 const fetchImages = async (products) => {
   const getImage = async (category, item) => {
@@ -69,7 +69,7 @@ export const buyProducts = (products) => {
     const user = await firebase.auth().currentUser;
     if (user) {
       const setHistory = async (prod) => {
-        await firebase.database().ref('/').child(user.uid)
+        await firebase.database().ref('/users').child(user.uid)
           .child('history').push({
             time: Date.now(),
             item: prod.item,
@@ -104,7 +104,7 @@ export const rateProduct = (prod, rate) => {
     try {
       const user = await firebase.auth().currentUser;
       if (user) {
-        await firebase.database().ref('/').child(user.uid)
+        await firebase.database().ref('/users').child(user.uid)
         .child('history').child(prod.id).child('rate').set(rate);
         let rateProduct = {};
         await firebase.database().ref('/')

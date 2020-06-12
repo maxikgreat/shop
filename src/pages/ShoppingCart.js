@@ -1,11 +1,13 @@
 import React from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
-import {Button, IconButton, Title, Paragraph, Divider, ActivityIndicator} from 'react-native-paper';
+import {Button, IconButton, Title, Paragraph, Divider} from 'react-native-paper';
 import {theme} from '../../theme';
 import {useShop} from '../hooks/useShop';
+import { useAuth } from '../hooks/useAuth';
 
 export const ShoppingCart = ({navigation}) => {
-  const {deleteFromShoppingCart, deleteAllCart, cart, buyItems, shop} = useShop();
+  const {deleteFromShoppingCart, deleteAllCart, cart, buyItems, shop} = useShop(navigation);
+  const {user} = useAuth();
 
   const deleteAllHandler = () => {
     deleteAllCart();
@@ -75,12 +77,13 @@ export const ShoppingCart = ({navigation}) => {
           Buy
         </Button>
         <Button
-          disabled={shop.loading}
+          disabled={!user.logged}
           loading={shop.loading}
           mode='contained'
           color={theme.colors.error}
           style={styles.button}
           labelStyle={{fontWeight: 'bold', fontSize: 15}}
+          onPress={() => buyItems(cart, user.bonus)}
         >
           Buy with bonus
         </Button>

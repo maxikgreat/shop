@@ -54,7 +54,6 @@ export const Product = ({route}) => {
         </DataTable.Row>
       ));
     } else {
-      console.log('no return')
       return <Title>No reviews found</Title>
     }
   }
@@ -145,8 +144,8 @@ export const Product = ({route}) => {
           icon='cart'  
           color={theme.colors.error} 
           style={styles.buyButton}
-          contentStyle={{height: 50}}
-          labelStyle={{fontSize: 20, fontWeight: 'bold'}}
+          contentStyle={{height: 35}}
+          labelStyle={{fontSize: 16, fontWeight: 'bold'}}
           onPress={() => addToCartHandler()}
         >Add to cart</Button>
     </View>
@@ -168,10 +167,11 @@ const styles = StyleSheet.create({
     resizeMode: 'contain'
   },
   vendorModelContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   headerText: {
-    fontSize: 30,
+    fontSize: 25,
   },
   specText: {
     fontWeight: 'bold'
