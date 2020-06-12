@@ -14,12 +14,50 @@ export const Product = ({route}) => {
   const {addToShoppingCart} = useShop();
   const snackbar = useContext(SnackbarContext);
 
-  const [desc, setDesc] = useState(true);
+  const [opt, setOpt] = useState('description');
 
   const addToCartHandler = () => {
     addToShoppingCart(prod);
     snackbar.show('Item was added to your cart');
   };
+
+  const renderOpt = () => {
+    switch (opt) {
+      case 'description': 
+        return <Paragraph style={styles.desc}>{prod.desc}</Paragraph>;
+      case 'characteristics':
+        return (
+          <DataTable>
+            {renderCharacteristics()}
+          </DataTable>
+        )
+      case 'reviews': 
+        return (
+          <DataTable>
+            <DataTable.Header>
+              <DataTable.Title>User's email</DataTable.Title>
+              <DataTable.Title>Mark</DataTable.Title>
+            </DataTable.Header>
+            {renderReviews()}
+          </DataTable>
+        )
+      default: return <Title>Error</Title>
+    }
+  }
+
+  const renderReviews = () => {
+    if (prod.rating.reviews) {
+      return prod.rating.reviews.map((review, index) => (
+        <DataTable.Row key={index}>
+          <DataTable.Cell>{review.user}</DataTable.Cell>
+          <DataTable.Cell>{review.mark}</DataTable.Cell>
+        </DataTable.Row>
+      ));
+    } else {
+      console.log('no return')
+      return <Title>No reviews found</Title>
+    }
+  }
 
   const renderCharacteristics = () => {
     return Object.keys(prod.stats).map((stat, index) => {
@@ -35,7 +73,7 @@ export const Product = ({route}) => {
   const renderRating = () => {
     const rating = [];
     for (let i = 0; i < MAX_RATE; i++) {
-      if (prod.rating > i) {
+      if (Math.round(prod.rating.average) > i) {
         rating.push(<Icon key={i} name='star' color='#fcdf4c' size={20} />);
       } else {
         rating.push(<Icon key={i} name='star' color={theme.colors.primary} size={20} />);
@@ -80,23 +118,25 @@ export const Product = ({route}) => {
         <View style={styles.buttonsContainer}>
           <Button
             style={styles.optButton}
-            mode={desc ? 'contained' : 'outlined'}
-            onPress={() => setDesc(true)}
+            mode={opt === 'description' ? 'contained' : 'outlined'}
+            onPress={() => setOpt('description')}
+            labelStyle={{fontSize: 12}}
           >Description</Button>
           <Button
             style={styles.optButton}
-            mode={!desc ? 'contained' : 'outlined'}
-            onPress={() => setDesc(false)}
+            mode={opt === 'characteristics' ? 'contained' : 'outlined'}
+            onPress={() => setOpt('characteristics')}
+            labelStyle={{fontSize: 12}}
           >Characteristics</Button>
+          <Button
+            style={styles.optButton}
+            mode={opt === 'reviews' ? 'contained' : 'outlined'}
+            onPress={() => setOpt('reviews')}
+            labelStyle={{fontSize: 12}}
+          >Reviews</Button>
         </View>
         <ScrollView style={styles.scroll}>
-          {
-            desc
-            ? <Paragraph style={styles.desc}>{prod.desc}</Paragraph>
-            : <DataTable>
-                {renderCharacteristics()}
-              </DataTable>
-          }
+          {renderOpt()}
         </ScrollView>
       </View>
       <Button
@@ -166,7 +206,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   optButton: {
-    width: '50%'
+    width: '33.3%'
   },
   scroll: {
     height: '28%'

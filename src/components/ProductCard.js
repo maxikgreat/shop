@@ -23,7 +23,7 @@ export const ProductCard = ({prod, navigation}) => {
   const renderRating = () => {
     const rating = [];
     for (let i = 0; i < MAX_RATE; i++) {
-      if (prod.rating > i) {
+      if (Math.round(prod.rating.average) > i) {
         rating.push(<Icon key={i} name='star' color='#fcdf4c' size={15} />);
       } else {
         rating.push(<Icon key={i} name='star' color={theme.colors.primary} size={15} />);
@@ -55,6 +55,10 @@ export const ProductCard = ({prod, navigation}) => {
           }
           <View style={{...styles.row, ...styles.rate}}>
             {renderRating()}
+            {prod.rating.reviews
+              ? <Paragraph>| {prod.rating.reviews.length} reviews</Paragraph>
+              : <Paragraph>| 0 reviews</Paragraph>
+            }
           </View>
           <Paragraph>{prod.desc.substring(0,80)}...</Paragraph>
         </Card.Content>
@@ -131,7 +135,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between'
   },
   rate: {
-    marginBottom: 5
+    marginBottom: 5,
+    alignItems: 'center'
   },
   discount: {
     position: 'absolute',

@@ -7,6 +7,7 @@ import {Filters} from './Filters';
 import {Title, Divider, Paragraph} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {SORTS} from '../consts';
+import {useShop} from '../hooks/useShop';
 import {sortItems} from '../functions/sortItems';
 import {countDiscount} from '../functions/countDiscount';
 import {filterItems} from '../functions/filterItems';
@@ -23,6 +24,8 @@ export const ProductList = ({route, navigation}) => {
     guarantee: false,
     price: calculateMinMaxPrice(route.params.productList),
   });
+
+  
 
   const renderProducts = () => {
     const noFiltered = route.params.productList;

@@ -20,7 +20,7 @@ export const Categories = ({navigation}) => {
               title={cat.name}
               titleStyle={styles.listItem}
               onPress={() => navigation.navigate('ProductList',{
-                productList: getItemsByCategory(cat.name)
+                productList: getItemsByCategory(cat.name),
               })}
               left={() => <Badge style={styles.badgeStyle}>{cat.items}</Badge>}
           />

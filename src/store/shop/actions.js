@@ -103,8 +103,32 @@ export const rateProduct = (prod, rate) => {
   return async dispatch => {
     try {
       const user = await firebase.auth().currentUser;
-      await firebase.database().ref('/').child(user.uid)
+      if (user) {
+        await firebase.database().ref('/').child(user.uid)
         .child('history').child(prod.id).child('rate').set(rate);
+        let rateProduct = {};
+        await firebase.database().ref('/')
+          .child('products').child(prod.item.category).child(prod.item.id).child('rating')
+          .once('value', snapshot => {
+            rateProduct = snapshot.val();
+          });
+          if (rateProduct.average === 0) {
+            rateProduct.reviews = [{
+              user: user.email,
+              mark: rate
+            }];
+            rateProduct.average = rate;
+          } else {
+            rateProduct.reviews.push({user: user.email, mark: rate});
+            const allMarksSum = rateProduct.reviews.reduce((sum, item) =>  {
+              return sum + item.mark;
+            }, 0);
+            rateProduct.average = allMarksSum / rateProduct.reviews.length;
+          }
+          await firebase.database().ref('/')
+            .child('products').child(prod.item.category).child(prod.item.id).child('rating')
+            .set(rateProduct);
+      }
     } catch (e) {
       return e.message;
     }
