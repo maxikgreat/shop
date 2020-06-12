@@ -5,7 +5,6 @@ import {createDrawerNavigator, DrawerItemList} from '@react-navigation/drawer';
 import {theme} from '../../theme';
 import {Home} from './Home';
 import {Purchases} from './Purchases';
-import {Profile} from './Profile';
 import {useAuth} from '../hooks/useAuth';
 import {useShop} from '../hooks/useShop';
 import {useSelector} from 'react-redux';
@@ -153,7 +152,6 @@ export const ShopNavigation = () => {
             ? <>
                 <Drawer.Screen name='Products' component={Home} />
                 <Drawer.Screen name='Purchase history' component={Purchases} />
-                <Drawer.Screen name='Profile' component={Profile} />
               </>
             : <Drawer.Screen name='Products' component={Home} />
           }

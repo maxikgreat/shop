@@ -1,17 +1,16 @@
 import React from 'react';
 import {View, StyleSheet, ScrollView} from 'react-native';
-import {Button, IconButton, Title, Paragraph, Divider} from 'react-native-paper';
+import {Button, IconButton, Title, Paragraph, Divider, ActivityIndicator} from 'react-native-paper';
 import {theme} from '../../theme';
 import {useShop} from '../hooks/useShop';
 
 export const ShoppingCart = ({navigation}) => {
-  const {deleteFromShoppingCart, deleteAllCart, cart} = useShop();
+  const {deleteFromShoppingCart, deleteAllCart, cart, buyItems, shop} = useShop();
 
   const deleteAllHandler = () => {
     deleteAllCart();
     navigation.goBack();
   }
-  
   const renderItems = () => {
     return cart.items.map((item, index) => {
       return (
@@ -23,6 +22,9 @@ export const ShoppingCart = ({navigation}) => {
               </Title>
               <Paragraph>
                 {item.item.model}
+              </Paragraph>
+              <Paragraph>
+                {item.item.category}
               </Paragraph>
             </View>
             <Title style={{...styles.price, ...styles.tableHead}}>{item.item.discountPrice}$</Title>
@@ -63,13 +65,18 @@ export const ShoppingCart = ({navigation}) => {
       <View style={styles.buttonsContainer}>
         <Button
           mode='contained'
+          disabled={shop.loading}
+          loading={shop.loading}
           color={theme.colors.primary}
           style={styles.button}
           labelStyle={{fontWeight: 'bold', fontSize: 15}}
+          onPress={() => buyItems(cart)}
         >
           Buy
         </Button>
         <Button
+          disabled={shop.loading}
+          loading={shop.loading}
           mode='contained'
           color={theme.colors.error}
           style={styles.button}
@@ -146,5 +153,12 @@ const styles = StyleSheet.create({
   specText: {
     color: theme.colors.primary,
     fontWeight: 'bold'
+  },
+  loader: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 })

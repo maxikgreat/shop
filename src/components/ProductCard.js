@@ -43,7 +43,11 @@ export const ProductCard = ({prod, navigation}) => {
           : null
         }
         <Card.Content>
-          <Title style={styles.vendorText}><Text style={styles.specText}>{prod.vendor}</Text> | {prod.model}</Title>        
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
+            <Title style={styles.vendorText}><Text style={styles.specText}>{prod.vendor}</Text> | {prod.model}</Title>    
+            <Paragraph>{prod.quantity} items</Paragraph>
+          </View>
+          
           {
             prod.garancy > 0
             ? <Paragraph style={styles.guarantee}>Guarantee {prod.garancy} monthes</Paragraph>
@@ -73,6 +77,7 @@ export const ProductCard = ({prod, navigation}) => {
             >More
             </Button>
             <Button
+              disabled={prod.quantity === 0}
               style={styles.button}
               mode="contained"
               color={theme.colors.error}

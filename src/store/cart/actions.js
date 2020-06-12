@@ -69,7 +69,7 @@ export const addToCart = (prod) => {
         });
       } else {
         const foundIndex = user.cart.items.findIndex(
-          ({item}) => item.vendor === prod.vendor && item.model && prod.model
+          ({item}) => item.id === prod.id
         );
         if (foundIndex === -1) {
           user.cart = {
@@ -110,7 +110,7 @@ export const addToCart = (prod) => {
         });
       } else {
         const foundIndex = cart.items.findIndex(
-          ({item}) => item.vendor === prod.vendor && item.model && prod.model
+          ({item}) => item.id === prod.id
         );
         if (foundIndex === -1) {
           cart = {
@@ -142,7 +142,7 @@ export const deleteFromCart = (prod) => {
     const user = JSON.parse(userJSON);
     if (user) {
       const filteredCart = user.cart.items.filter(
-        ({item}) => item.vendor !== prod.item.vendor && item.model !== prod.item.model
+        ({item}) => item.id !== prod.item.id
       );
       user.cart = {
         items: filteredCart,
@@ -158,7 +158,7 @@ export const deleteFromCart = (prod) => {
       const cartJSON = await AsyncStorage.getItem('cart');
       let cart = JSON.parse(cartJSON);
       const filteredCart = cart.items.filter(
-        ({item}) => item.vendor !== prod.item.vendor && item.model !== prod.item.model
+        ({item}) => item.id !== prod.item.id
       );
       cart = {
         items: filteredCart,

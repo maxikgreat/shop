@@ -1,7 +1,22 @@
-import {USER_LOGIN, USER_LOGOUT, USER_SIGNUP} from '../types';
+import {USER_LOGIN, USER_LOGOUT, USER_SIGNUP, USER_FETCH_HISTORY} from '../types';
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from '../../firebase';
-import { Base64 } from 'js-base64'
+import { Base64 } from 'js-base64';
+
+const fetchHistory = async (dispatch, uid) => {
+    try {
+      console.log('FETCH HISTORY');
+      await firebase.database().ref('/').child(uid).child('history')
+       .on('value', snapshot => {
+          dispatch({
+          type: USER_FETCH_HISTORY,
+          payload: snapshot.val()
+        })
+      })
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 export const signup = (email, password) => {
   return async dispatch => {
@@ -12,6 +27,7 @@ export const signup = (email, password) => {
         password: Base64.encode(password),
       }));
       if (user) {
+        await fetchHistory(dispatch, user.user.uid);
         dispatch({
           type: USER_SIGNUP,
           payload: {
@@ -31,6 +47,7 @@ export const login = (email, password) => {
     try {
       const user = await firebase.auth().signInWithEmailAndPassword(email, password);
       if (user) {
+        await fetchHistory(dispatch, user.user.uid);
         await AsyncStorage.setItem('user', JSON.stringify({
           email: user.user.email,
           password: Base64.encode(password),

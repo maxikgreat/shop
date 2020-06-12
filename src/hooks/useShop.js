@@ -1,13 +1,16 @@
 
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchProducts} from '../store/shop/actions';
+import {useContext} from 'react';
+import {fetchProducts, buyProducts, rateProduct} from '../store/shop/actions';
 import {fetchCart, addToCart, deleteFromCart, deleteAll} from '../store/cart/actions';
+import { SnackbarContext } from '../context/SnackbarContext';
 
 
 export const useShop = () => {
   const dispatch = useDispatch();
   const shop = useSelector(state => state.shop);
   const cart = useSelector(state => state.cart);
+  const snackbar = useContext(SnackbarContext);
 
   const fetchList = async () => {
     await dispatch(fetchProducts());
@@ -38,6 +41,24 @@ export const useShop = () => {
     return items;
   }
 
+  const buyItems = async (cart) => {
+    if (cart.items.length > 0) {
+      const error = await dispatch(buyProducts(cart.items));
+      if (error) {
+        snackbar.show(error);
+      } else {
+        snackbar.show('Stuff was succesfully bought');
+        deleteAllCart();
+      }
+    } else {
+      snackbar.show('No items in cart')
+    }
+  }
+
+  const rateItem = (item) => {
+    dispatch(rateProduct(item));
+  }
+
   const fetchShoppingCart = () => {
     dispatch(fetchCart());
   }
@@ -63,6 +84,9 @@ export const useShop = () => {
     addToShoppingCart,
     deleteFromShoppingCart,
     deleteAllCart,
-    cart
+    buyItems,
+    rateItem,
+    cart,
+    shop
   };
 };

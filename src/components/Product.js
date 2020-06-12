@@ -100,6 +100,7 @@ export const Product = ({route}) => {
         </ScrollView>
       </View>
       <Button
+          disabled={prod.quantity === 0}
           mode='contained' 
           icon='cart'  
           color={theme.colors.error} 
