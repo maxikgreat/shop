@@ -17,16 +17,14 @@ export const AddProduct = ({navigation}) => {
 
   const [product, setProduct] = useState({
       category: categories[0].name,
-      vendor: 'Samsuka',
-      model: 'XZF342',
-      desc: 'Some desc',
-      price: 120,
-      discount: 10,
-      guarantee: 6,
-      quantity: 10,
-      stats: {
-        "Mosznost": "12 milionow"
-      },
+      vendor: '',
+      model: '',
+      desc: '',
+      price: 0,
+      discount: 0,
+      guarantee: 0,
+      quantity: 0,
+      stats: {},
   });
 
   const [stats, setStats] = useState({
