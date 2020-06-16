@@ -11,6 +11,7 @@ import {ShoppingCart} from './pages/ShoppingCart';
 import {useAuth} from './hooks/useAuth';
 import {useShop} from './hooks/useShop';
 import {useSelector} from 'react-redux';
+import { About } from './pages/About';
 
 const RootNavigator = createStackNavigator();
 
@@ -57,6 +58,11 @@ export const App = () => {
             <RootNavigator.Screen
               name='ShoppingCart'
               component={ShoppingCart}
+              options={headerStyle}
+            />
+            <RootNavigator.Screen
+              name='About'
+              component={About}
               options={headerStyle}
             />
           </RootNavigator.Navigator>

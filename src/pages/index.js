@@ -5,6 +5,7 @@ import {createDrawerNavigator, DrawerItemList} from '@react-navigation/drawer';
 import {theme} from '../../theme';
 import {Home} from './Home';
 import {Purchases} from './Purchases';
+import {Manage} from './Manage';
 import {useAuth} from '../hooks/useAuth';
 import {useShop} from '../hooks/useShop';
 import {useSelector} from 'react-redux';
@@ -96,7 +97,7 @@ const CustomDrawerContent = (props) => {
             color={theme.colors.text} 
             size={40} 
             icon="comment-question-outline" 
-            onPress={() => console.log('Questions')} 
+            onPress={() => props.navigation.navigate('About')} 
           />
           <Appbar.Action 
             disabled={!props.logged} 
@@ -154,6 +155,7 @@ export const ShopNavigation = () => {
             ? <>
                 <Drawer.Screen name='Products' component={Home} />
                 <Drawer.Screen name='Purchase history' component={Purchases} />
+                <Drawer.Screen name='Manage' component={Manage} />
               </>
             : <Drawer.Screen name='Products' component={Home} />
           }

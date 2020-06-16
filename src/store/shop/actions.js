@@ -134,3 +134,69 @@ export const rateProduct = (prod, rate) => {
     }
   }
 }
+
+export const addCategory = async (value) => {
+  const user = await firebase.auth().currentUser;
+  if (!user) {
+    return 'Error! Repeat log in procedure';
+  }
+
+  let products = {};
+  try {
+    await firebase.database().ref('/products')
+    .once('value', snapshot => {
+      products = snapshot.val();
+    });
+    if (!Object.keys(products).includes(value)) {
+      products[value] = 'empty';
+      await firebase.database().ref('/products').set(products);
+      return `Category "${value}" was added`;
+    } else {
+      return 'This category already exists';
+    }
+  } catch (e) {
+    return e.message;
+  }
+};
+
+export const addProduct = async (value) => {
+  const user = await firebase.auth().currentUser;
+  if (!user) {
+    return 'Error! Repeat log in procedure';
+  }
+  try {
+    let isFirst = false;
+    let existsProducts = [];
+    await firebase.database().ref('/products')
+      .child(value.category)
+      .once('value', snapshot => {
+        if (!Array.isArray(snapshot.val())) {
+          isFirst = true;
+        }
+      });
+    if (isFirst) {
+      value.id = 0;
+      value.rating = {
+        average: 0
+      };
+      await firebase.database().ref('/products')
+        .child(value.category).set([value]);
+    } else {
+      await firebase.database().ref('/products')
+        .child(value.category)
+        .once('value', snapshot => {
+          existsProducts = snapshot.val();
+        });
+      value.id = existsProducts.length;
+      value.rating = {
+        average: 0
+      };
+      existsProducts = [...existsProducts, value];
+      await firebase.database().ref('/products')
+        .child(value.category).set(existsProducts);
+    }
+    return 'Item was successfully added'
+  } catch (e) {
+    return e.message;
+  }
+};

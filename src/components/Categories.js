@@ -3,6 +3,7 @@ import {List, Badge, Divider} from 'react-native-paper';
 import {StyleSheet, View} from 'react-native';
 import {theme} from '../../theme';
 import {useShop} from '../hooks/useShop';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export const Categories = ({navigation}) => {
   const {
@@ -18,6 +19,7 @@ export const Categories = ({navigation}) => {
           <Divider style={styles.divider}/>
             <List.Item
               title={cat.name}
+              disabled={cat.items === 0 ? true : false}
               titleStyle={styles.listItem}
               onPress={() => navigation.navigate('ProductList',{
                 productList: getItemsByCategory(cat.name),
@@ -31,6 +33,7 @@ export const Categories = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <ScrollView>
       <List.Section>
           <List.Subheader style={styles.listHeader}>Categories</List.Subheader>
           {renderCategories()}
@@ -46,6 +49,7 @@ export const Categories = ({navigation}) => {
           />
           <Divider style={styles.divider} />
       </List.Section>
+      </ScrollView>
      </View>
   )
 };

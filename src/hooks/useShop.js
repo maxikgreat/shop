@@ -1,7 +1,7 @@
 
 import {useDispatch, useSelector} from 'react-redux';
 import {useContext} from 'react';
-import {fetchProducts, buyProducts, rateProduct} from '../store/shop/actions';
+import {fetchProducts, buyProducts, rateProduct, addCategory, addProduct} from '../store/shop/actions';
 import {fetchCart, addToCart, deleteFromCart, deleteAll} from '../store/cart/actions';
 import {checkBonus, updateBonus} from '../store/user/actions';
 import { SnackbarContext } from '../context/SnackbarContext';
@@ -22,22 +22,32 @@ export const useShop = (navigation) => {
     for (let category in shop.products) {
       const categoryItem = {};
       categoryItem.name = category;
-      categoryItem.items = shop.products[category].length;
+      if (Array.isArray(shop.products[category])) {
+        categoryItem.items = shop.products[category].length;
+      } else {
+        categoryItem.items = 0;
+      }
       categories.push(categoryItem);
     }
     return categories;
   };
 
   const getItemsByCategory = (category) => {
-    return shop.products[category].map(item => item);
+    if (Array.isArray(shop.products[category])) {
+      return shop.products[category].map(item => item);
+    } else {
+      return [];
+    }
   };
 
   const getAllItems = () => {
     const items = [];
     for (let category in shop.products) {
-      shop.products[category].forEach(item => {
-        items.push(item);
-      });
+      if (Array.isArray(shop.products[category])) {
+        shop.products[category].forEach(item => {
+          items.push(item);
+        });
+      }
     }
     return items;
   }
@@ -97,6 +107,17 @@ export const useShop = (navigation) => {
     dispatch(deleteAll());
   }
 
+  const addCat = async (value) => {
+    const response = await addCategory(value);
+    snackbar.show(response);
+  };
+
+  const addProd = async (value) => {
+    const response = await addProduct(value);
+    snackbar.show(response);
+    navigation.goBack();
+  };
+
   return {
     fetchList, 
     getCategories, 
@@ -109,6 +130,8 @@ export const useShop = (navigation) => {
     buyItems,
     rateItem,
     checkPromo,
+    addCat,
+    addProd,
     cart,
     shop
   };

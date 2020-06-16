@@ -56,5 +56,38 @@ export const useValidator = (confirmAction) => {
     checkErrors(localError);
   };
 
-  return {error, validateLogin, validateSignup};
+  const validateProduct = (product) => {
+    setError({});
+    const localError = {};
+
+    if (!product.vendor) {
+      localError.vendor = true;
+    }
+    if (!product.model) {
+      localError.model = true;
+    }
+    if (!product.desc) {
+      localError.desc = true;
+    }
+    if (!product.price || product.price <= 0) {
+      localError.price = true;
+    }
+    if (!product.discount || product.discount <= 0) {
+      localError.discount = true;
+    }
+    if (!product.guarantee || product.guarantee <= 0) {
+      localError.guarantee = true;
+    }
+    if (!product.quantity || product.quantity <= 0) {
+      localError.quantity = true;
+    }
+    if (Object.keys(product.stats).length === 0) {
+      localError.stats = true;
+    }
+    setError(localError);
+
+    checkErrors(localError);
+  };
+
+  return {error, validateLogin, validateSignup, validateProduct};
 }
