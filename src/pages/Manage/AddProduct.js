@@ -41,7 +41,6 @@ export const AddProduct = ({navigation}) => {
     if (!stats.key || !stats.value) {
       setStats({...stats, error: 'Fields are required'})
     } else {
-      setStats({key: '', value: '', error: ''});
       setProduct({
         ...product,
         stats: {
@@ -49,6 +48,7 @@ export const AddProduct = ({navigation}) => {
           [stats.key]: stats.value,
         }
       })
+      setStats({key: '', value: '', error: ''});
     }
   }
 
