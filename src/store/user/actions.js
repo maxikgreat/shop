@@ -97,6 +97,8 @@ export const signup = (email, password) => {
         password: Base64.encode(password),
       }));
       if (user) {
+        await firebase.database().ref('/users/').child(user.user.uid)
+          .child('bonus').set(0);
         await fetchHistory(dispatch, user.user.uid);
         await fetchBonus(dispatch, user.user.uid);
         dispatch({

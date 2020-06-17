@@ -63,11 +63,13 @@ export const useShop = (navigation) => {
 
   const buyItems = async (cart, bonus = false) => {
     if (cart.items.length > 0) {
-      if (bonus && bonus < cart.summary) {
-          snackbar.show('Not enough money on bonus account')
+      if (bonus !== false) {
+        if (bonus < cart.summary) {
+          snackbar.show('Not enough money on bonus account');
           return;
-      } else {
-        changeBonusBalance(cart.summary);
+        } else {
+          changeBonusBalance(cart.summary);
+        }
       }
       const error = await dispatch(buyProducts(cart.items));
       if (error) {
