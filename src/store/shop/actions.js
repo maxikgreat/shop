@@ -69,6 +69,9 @@ export const buyProducts = (products) => {
     const user = await firebase.auth().currentUser;
     if (user) {
       const setHistory = async (prod) => {
+        if (!prod.item.img) {
+          prod.item.img = false;
+        }
         await firebase.database().ref('/users').child(user.uid)
           .child('history').push({
             time: Date.now(),
